@@ -1,4 +1,5 @@
-﻿using System;
+﻿using lesson_17;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -17,6 +18,26 @@ namespace Lesson_17
         protected int _empAge;
         protected string _empSSN;
         protected EmployeePayTypeEnum _payType;
+
+        //содержит обьект BenefitPackage
+        protected BenefitPackage EmpBenefits = new BenefitPackage();
+
+        //открывает доступ к некоторому поведению, связаному со льготами
+        public double GetBenefitCost()
+            => EmpBenefits.ComputePayDeduction();
+
+        //этот класс может быть предопределен в производном классе
+        public virtual void GiveBonus(float amount)
+        {
+            Pay += amount;
+        }
+
+        //открывает доступ к обьекту через специалное свойство 
+        public BenefitPackage Benefits
+        {
+            get { return EmpBenefits; }
+            set { EmpBenefits = value; }
+        }
 
         public int Age
         {
@@ -38,16 +59,16 @@ namespace Lesson_17
         }
 
         //методы 
-        public  void GiveBonus(float amount)
-        {
-            Pay = this switch
-            {
-                { PayType: EmployeePayTypeEnum.Commissoin } => Pay += .10F * amount,
-                { PayType: EmployeePayTypeEnum.Hourly } => Pay += .40F * amount / 2080F,
-                { PayType: EmployeePayTypeEnum.Salaried } => Pay += amount, _ => Pay += 0
-            };
-        }
-        public void DisplayStats()
+        //public  void GiveBonus(float amount)
+        //{
+        //    Pay = this switch
+        //    {
+        //        { PayType: EmployeePayTypeEnum.Commissoin } => Pay += .10F * amount,
+        //        { PayType: EmployeePayTypeEnum.Hourly } => Pay += .40F * amount / 2080F,
+        //        { PayType: EmployeePayTypeEnum.Salaried } => Pay += amount, _ => Pay += 0
+        //    };
+        //}
+        public virtual void DisplayStats()
         {
             Console.WriteLine("Name: {0}", Name); //имя сотрудника
             Console.WriteLine("ID: {0}", Id); //инедетификационный номер сотрудника

@@ -20,5 +20,21 @@ namespace lesson_17
         }
 
         public Manager() { }
+
+        public override void GiveBonus(float amount)
+        {
+            base.GiveBonus(amount);
+            Random r = new Random();
+            StockOptions += r.Next(500);
+        }
+
+        public override void DisplayStats()
+        {
+            base.DisplayStats();
+            //вывод количетсва фондорвых опционов
+            Console.WriteLine("Number of Stock OPtions: {0}", StockOptions);
+        }
+
+
     }
 }
